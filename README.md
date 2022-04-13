@@ -4,7 +4,7 @@
 ### Equipe 4
 - Lucas Rosa
 - Guilherme Brasil Tourinho
-- Joaderson Felipe Silva Barbosa
+- J. Felipe S. Barbosa
 - Everton Silverio
 - Eduardo Russo
 
