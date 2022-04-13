@@ -1,32 +1,176 @@
 const urlGetUser = 'https://ctd-todo-api.herokuapp.com/v1/users/getMe';
-const urlTasks = 'https://ctd-todo-api.herokuapp.com/v1/tasks?';
+const urlTasks = 'https://ctd-todo-api.herokuapp.com/v1/tasks';
 const jwt = JSON.parse(localStorage.getItem('login')).jwt;
 
-// metodo handle status tarefa
-function alteraStatus(btn, status) {
-   console.log(btn.querySelector('i').getAttribute('id'));
-   // const data = {
-   //    description: novaTarefa.value,
-   //    completed: false
-   // };
+const novaTarefa = document.getElementById('novaTarea');
+const skeleton = document.getElementById('skeleton');
+const tarefasPendentes = document.querySelector('.tarefas-pendentes');
+const tarefasTerminadas = document.querySelector('.tarefas-terminadas');
 
-   // const settings = {
-   //    method: 'POST',
-   //    headers: {
-   //       'content-type': 'application/json',
-   //       Authorization: jwt
-   //    },
-   //    body: JSON.stringify(data)
-   // };
+// metodo handle status tarefa
+function clickTask(id, completed) {
+   const data = {
+      completed: !completed
+   };
+
+   const settings = {
+      method: 'PUT',
+      headers: {
+         'content-type': 'application/json',
+         authorization: jwt
+      },
+      body: JSON.stringify(data)
+   }
+
+   fetch(urlTasks + '/' + id, settings)
+      .then(response => {
+         return response.json()
+      })
+      .then(task => {
+         console.log(task);
+         carregaTarefas();
+      })
 }
 
-window.onload = function() {
-   const novaTarefa = document.getElementById('novaTarea');
+// metodo delete tarefa
+function removeTask(id) {
+   console.log(`remove ${id}`);
+
+   const settings = {
+      method: 'DELETE',
+      headers: {
+         'content-type': 'application/json',
+         authorization: jwt
+      }
+   }
+
+   fetch(urlTasks + '/' + id, settings)
+      .then(response => {
+         return response.json()
+      })
+      .then(task => {
+         console.log(task);
+         carregaTarefas();
+      })
+}
+
+// metodo para obter lista de tarefas
+const carregaTarefas = function() {
+   const settings = {
+      method: 'GET',
+      headers: {
+         authorization: jwt
+      }
+   };
+
+   fetch(urlTasks, settings)
+      .then(response => response.json())
+      .then(tasks => {
+         console.log(tasks);
+
+         montaTarefas(tasks);
+
+      })
+      .catch(err => {
+         console.log(err);
+         alert("Falha no login!")
+      });
+}
+
+// monta tarefas na tela
+const montaTarefas = function(tasks) {
+   // remove visualização do skeleton
+   skeleton.style.display = 'none';
+
+   // listar as tarefas
+   tarefasPendentes.innerHTML = '';
+   tarefasTerminadas.innerHTML = '';
+
+   tasks.forEach(task => {
+      let date = new Date(task.createdAt);
+      date.toLocaleDateString('pt-BR');
+
+      // console.log(date.getFullYear());
+      date = date.getDate() +
+         "/" + (date.getMonth() + 1) +
+         "/" + date.getFullYear();
+
+      if (task.completed) {
+         tarefasTerminadas.innerHTML += templateTarefa(task, date);
+      } else {
+         tarefasPendentes.innerHTML += templateTarefa(task, date);
+      }
+   });
+}
+
+// retorna template tarefa
+const templateTarefa = function(task, date) {
+   let template = '';
+
+   if (task.completed) {
+      template = `
+         <li class="tarefa" id="id${task.id}">
+            <div class="done"></div>
+            <div class="descricao">
+            <p class="nome">${task.description}</p>
+            <div>
+               <button onclick="clickTask(${task.id}, true)"><i class="fas fa-undo-alt change"></i></button>
+               <button onclick="removeTask(${task.id})"><i class="far fa-trash-alt"></i></button>
+            </div>
+            </div>
+         </li>
+         `;
+   } else {
+      template = `
+         <li class="tarefa">
+            <div class="not-done" onclick="clickTask(${task.id}, false)"></div>
+            <div class="descricao">
+               <p class="nome">${task.description}</p>
+               <p class="timestamp">Criada em: ${date}</p>
+            </div>
+         </li>      
+      `;
+   }
+
+   return template;
+}
+
+// metodo para criar nova tarefa
+const criarTarefa = function() {
+   const data = {
+      description: novaTarefa.value,
+      completed: false
+   };
+
+   const settings = {
+      method: 'POST',
+      headers: {
+         'content-type': 'application/json',
+         Authorization: jwt
+      },
+      body: JSON.stringify(data)
+   };
+
+   fetch(urlTasks, settings)
+      .then(response => {
+         // if (response.status === 201) {
+         return response.json()
+            // }
+            // throw response;
+      })
+      .then(res => {
+         carregaTarefas();
+         novaTarefa.value = '';
+      })
+      .catch(err => {
+         console.log(err);
+         alert("Falha no login!")
+      });
+}
+
+window.addEventListener('load', function() {
    const formNovaTarefa = document.querySelector('.nova-tarefa')
    const userinfo = document.querySelector('.user-info p');
-   const skeleton = document.getElementById('skeleton');
-   const tarefasPendentes = document.querySelector('.tarefas-pendentes');
-   const tarefasTerminadas = document.querySelector('.tarefas-terminadas');
 
    // metodo para obter nome do usuario
    const carregaUsuario = function() {
@@ -59,131 +203,6 @@ window.onload = function() {
       userinfo.innerHTML = firstname + ' ' + lastname;
    }
 
-   // metodo para obter lista de tarefas
-   const carregaTarefas = function() {
-      const settings = {
-         method: 'GET',
-         headers: {
-            authorization: jwt
-         }
-      };
-
-      fetch(urlTasks, settings)
-         .then(response => {
-            // if (response.status === 201) {
-            return response.json()
-               // }
-               // throw response;
-         })
-         .then(tasks => {
-            console.log(tasks);
-            tasks.forEach(task => {
-               montaTarefas(task);
-            });
-         })
-         .catch(err => {
-            console.log(err);
-            alert("Falha no login!")
-         });
-   }
-
-   // monta tarefas na tela
-   const montaTarefas = function(task) {
-      // remove visualização do skeleton
-      skeleton.style.display = 'none';
-
-      let date = new Date(task.createdAt);
-      date.toLocaleDateString('pt-BR');
-
-      // console.log(date.getFullYear());
-      date = date.getDate() +
-         "/" + (date.getMonth() + 1) +
-         "/" + date.getFullYear();
-
-      if (task.completed) {
-         tarefasTerminadas.innerHTML += templateTarefa(task, date);
-         let elementoCriado = document.querySelector(`#id${task.id} .descricao div button`);
-
-         elementoCriado.addEventListener('click', function(ev) {
-            console.log('click');
-         })
-
-         console.log(elementoCriado);
-
-      } else {
-         tarefasPendentes.innerHTML += templateTarefa(task, date);
-      }
-   }
-
-   // retorna template tarefa
-   const templateTarefa = function(task, date) {
-      let template = '';
-
-      if (task.completed) {
-         template = `
-         <li class="tarefa" id="id${task.id}">
-            <div class="done"></div>
-            <div class="descricao">
-            <p class="nome">${task.description}</p>
-            <div>
-               <button ><i class="fas fa-undo-alt change"></i></button>
-               <button><i class="far fa-trash-alt"></i></button>
-            </div>
-            </div>
-         </li>
-         `;
-      } else {
-         template = `
-         <li class="tarefa">
-            <div class="not-done"></div>
-            <div class="descricao">
-               <p class="nome">${task.description}</p>
-               <p class="timestamp">Criada em: ${date}</p>
-            </div>
-         </li>      
-      `;
-      }
-
-      return template;
-   }
-
-   // metodo para criar nova tarefa
-   const criarTarefa = function() {
-      const data = {
-         description: novaTarefa.value,
-         completed: false
-      };
-
-      const settings = {
-         method: 'POST',
-         headers: {
-            'content-type': 'application/json',
-            Authorization: jwt
-         },
-         body: JSON.stringify(data)
-      };
-
-      fetch(urlTasks, settings)
-         .then(response => {
-            // if (response.status === 201) {
-            return response.json()
-               // }
-               // throw response;
-         })
-         .then(res => {
-            // listar as tarefas
-            tarefasPendentes.innerHTML = '';
-            tarefasTerminadas.innerHTML = '';
-
-            carregaTarefas();
-            novaTarefa.value = '';
-         })
-         .catch(err => {
-            console.log(err);
-            alert("Falha no login!")
-         });
-   }
-
    // obtem usuario
    carregaUsuario();
 
@@ -196,4 +215,4 @@ window.onload = function() {
       criarTarefa();
    })
 
-}
+});
