@@ -1,6 +1,7 @@
-# EXERCICIO - MESA DE TRABALHO - AULA 15
+# TO DO
+## PROJETO INTEGRADOR - FRONT END II
 
-## Equipe 4
+### Equipe 4
 - Lucas Rosa
 - Guilherme Brasil Tourinho
 - Joaderson Felipe Silva Barbosa
