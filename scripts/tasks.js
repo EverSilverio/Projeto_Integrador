@@ -6,6 +6,9 @@ const novaTarefa = document.getElementById('novaTarea');
 const skeleton = document.getElementById('skeleton');
 const tarefasPendentes = document.querySelector('.tarefas-pendentes');
 const tarefasTerminadas = document.querySelector('.tarefas-terminadas');
+const closeApp = document.getElementById('closeApp');
+const formNovaTarefa = document.querySelector('.nova-tarefa')
+const userinfo = document.querySelector('.user-info p');
 
 // metodo handle status tarefa
 function clickTask(id, completed) {
@@ -168,51 +171,55 @@ const criarTask = function() {
       });
 }
 
+// metodo para obter nome do usuario
+const carregaUsuario = function() {
+   const settings = {
+      method: 'GET',
+      headers: {
+         authorization: jwt
+      },
+   };
+
+   fetch(urlGetUser, settings)
+      .then(response => {
+         // if (response.status === 201) {
+         return response.json()
+            // }
+            // throw response;
+      })
+      .then(res => {
+         console.log(res);
+         atualizaNome(res.firstName, res.lastName);
+      })
+      .catch(err => {
+         console.log(err);
+         alert("Falha no login!")
+      });
+}
+
+// funcao ira atualizar nome no userinfo
+const atualizaNome = function(firstname, lastname) {
+   userinfo.innerHTML = firstname + ' ' + lastname;
+}
+
+// fechar sessao
+closeApp.addEventListener('click', function(ev) {
+   ev.preventDefault();
+   localStorage.removeItem('login');
+   location.href = "index.html";
+})
+
+// adiciona evento de criar ao tarefa ao botan "+"
+formNovaTarefa.addEventListener('submit', function(ev) {
+   ev.preventDefault();
+   criarTask();
+})
+
+// ao carregar a janela
 window.addEventListener('load', function() {
-   const formNovaTarefa = document.querySelector('.nova-tarefa')
-   const userinfo = document.querySelector('.user-info p');
-
-   // metodo para obter nome do usuario
-   const carregaUsuario = function() {
-      const settings = {
-         method: 'GET',
-         headers: {
-            authorization: jwt
-         },
-      };
-
-      fetch(urlGetUser, settings)
-         .then(response => {
-            // if (response.status === 201) {
-            return response.json()
-               // }
-               // throw response;
-         })
-         .then(res => {
-            console.log(res);
-            atualizaNome(res.firstName, res.lastName);
-         })
-         .catch(err => {
-            console.log(err);
-            alert("Falha no login!")
-         });
-   }
-
-   // funcao ira atualizar nome no userinfo
-   const atualizaNome = function(firstname, lastname) {
-      userinfo.innerHTML = firstname + ' ' + lastname;
-   }
-
    // obtem usuario
    carregaUsuario();
 
    // listar as tarefas
    carregaTasks();
-
-   // adiciona evento de criar ao tarefa ao botan "+"
-   formNovaTarefa.addEventListener('submit', function(ev) {
-      ev.preventDefault();
-      criarTask();
-   })
-
 });
