@@ -28,7 +28,7 @@ function clickTask(id, completed) {
       })
       .then(task => {
          console.log(task);
-         carregaTarefas();
+         carregaTasks();
       })
 }
 
@@ -50,12 +50,12 @@ function removeTask(id) {
       })
       .then(task => {
          console.log(task);
-         carregaTarefas();
+         carregaTasks();
       })
 }
 
 // metodo para obter lista de tarefas
-const carregaTarefas = function() {
+const carregaTasks = function() {
    const settings = {
       method: 'GET',
       headers: {
@@ -68,7 +68,7 @@ const carregaTarefas = function() {
       .then(tasks => {
          console.log(tasks);
 
-         montaTarefas(tasks);
+         renderizarTasks(tasks);
 
       })
       .catch(err => {
@@ -77,8 +77,8 @@ const carregaTarefas = function() {
       });
 }
 
-// monta tarefas na tela
-const montaTarefas = function(tasks) {
+// renderiza tarefas na tela
+const renderizarTasks = function(tasks) {
    // remove visualização do skeleton
    skeleton.style.display = 'none';
 
@@ -96,15 +96,15 @@ const montaTarefas = function(tasks) {
          "/" + date.getFullYear();
 
       if (task.completed) {
-         tarefasTerminadas.innerHTML += templateTarefa(task, date);
+         tarefasTerminadas.innerHTML += templteTask(task, date);
       } else {
-         tarefasPendentes.innerHTML += templateTarefa(task, date);
+         tarefasPendentes.innerHTML += templteTask(task, date);
       }
    });
 }
 
 // retorna template tarefa
-const templateTarefa = function(task, date) {
+const templteTask = function(task, date) {
    let template = '';
 
    if (task.completed) {
@@ -136,7 +136,7 @@ const templateTarefa = function(task, date) {
 }
 
 // metodo para criar nova tarefa
-const criarTarefa = function() {
+const criarTask = function() {
    const data = {
       description: novaTarefa.value,
       completed: false
@@ -159,7 +159,7 @@ const criarTarefa = function() {
             // throw response;
       })
       .then(res => {
-         carregaTarefas();
+         carregaTasks();
          novaTarefa.value = '';
       })
       .catch(err => {
@@ -207,12 +207,12 @@ window.addEventListener('load', function() {
    carregaUsuario();
 
    // listar as tarefas
-   carregaTarefas();
+   carregaTasks();
 
    // adiciona evento de criar ao tarefa ao botan "+"
    formNovaTarefa.addEventListener('submit', function(ev) {
       ev.preventDefault();
-      criarTarefa();
+      criarTask();
    })
 
 });
