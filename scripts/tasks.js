@@ -96,15 +96,15 @@ const renderizarTasks = function(tasks) {
          "/" + date.getFullYear();
 
       if (task.completed) {
-         tarefasTerminadas.innerHTML += templteTask(task, date);
+         tarefasTerminadas.innerHTML += templateTask(task, date);
       } else {
-         tarefasPendentes.innerHTML += templteTask(task, date);
+         tarefasPendentes.innerHTML += templateTask(task, date);
       }
    });
 }
 
 // retorna template tarefa
-const templteTask = function(task, date) {
+const templateTask = function(task, date) {
    let template = '';
 
    if (task.completed) {
