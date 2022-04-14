@@ -32,9 +32,6 @@ function entrar(ev) {
          })
          .then(info => {
             localStorage.setItem('login', JSON.stringify({ email: email, jwt: info.jwt }));
-
-            console.log(info)
-            alert("Login efetuado com sucesso!")
             location.href = 'tarefas.html';
          })
          .catch(err => {

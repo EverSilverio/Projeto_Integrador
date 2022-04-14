@@ -9,7 +9,7 @@
 // validação [x] | normalização [x] | location | localStorage
 
 const nome = document.getElementById("nome");
-const apelido = document.getElementById("apelido");
+const sobrenome = document.getElementById("sobrenome");
 const email = document.getElementById("email");
 const password = document.getElementById("password");
 const password2 = document.getElementById("password2");
@@ -21,16 +21,16 @@ function criarUsuario(ev) {
 
    // validações do formulario
    // nome
-   if (nome.value.length < 4 || nome.value.split(' ').length < 2) {
+   if (nome.value.length < 1) {
       nome.focus();
-      alert("Nome Inválido, informar nome e sobrenome!")
+      alert("Informar nome com mais de 4 letras!")
       return;
    }
 
-   // apelido
-   if (apelido.value.length < 4 || apelido.value.length > 50) {
-      apelido.focus();
-      alert("Apelido deve ter mais de 4 caracteres menos que 50!")
+   // sobrenome
+   if (sobrenome.value.length < 1 || sobrenome.value.length > 50) {
+      sobrenome.focus();
+      alert("Sobrenome deve ter mais 1 letra menos que 50!")
       return;
    }
 
@@ -55,13 +55,17 @@ function criarUsuario(ev) {
       return;
    }
 
-   // configuracao da API, encontrada na tarefa de criar Usuario.
+   // chama metodo de criacao de usuario
+   metodoCriarUsuario();
+}
 
+const metodoCriarUsuario = function() {
+   // configuracao da API, encontrada na tarefa de criar Usuario.
    let configuracaoRequisicao = {
       method: 'POST',
       body: JSON.stringify({
          firstName: nome.value,
-         lastName: apelido.value,
+         lastName: sobrenome.value,
          email: email.value,
          password: password.value
       }),
@@ -72,7 +76,6 @@ function criarUsuario(ev) {
 
    // Chamando a API
    fetch("https://ctd-todo-api.herokuapp.com/v1/users", configuracaoRequisicao)
-
       .then((response) => {
          // verifica se o status se é 201, que é o status ok. Se não entra no catch.
          if (response.status == 201) {
@@ -80,20 +83,18 @@ function criarUsuario(ev) {
          }
          /* Se o código for diferente de sucesso (201), lança um throw para que a execução caia no Catch() */
          throw response;
-      }).then(function (resposta) {
+      })
+      .then(function(resposta) {
          console.log(resposta);
          console.log(resposta.jwt);
-         cadastroSucesso(nome.value, apelido.value, email.value, resposta.jwt)
+         cadastroSucesso(nome.value, sobrenome.value, email.value, resposta.jwt)
       })
       .catch(error => {
          cadastroErro(error)
       });
 }
 
-/*  Ao obter o sucesso, recebe o json (token) do usuário*/
-
-
-function cadastroSucesso(nome, sobrenome, email, jsonRecebido) {
+const cadastroSucesso = function(nome, sobrenome, email, jsonRecebido) {
    localStorage.setItem("user", JSON.stringify({ nome: nome, sobrenome: sobrenome, email: email, token: jsonRecebido }))
    alert("Usuário cadastrado com sucesso")
 
@@ -101,7 +102,7 @@ function cadastroSucesso(nome, sobrenome, email, jsonRecebido) {
    location.href = 'index.html';
 }
 
-function cadastroErro(statusRecebido) {
+const cadastroErro = function(statusRecebido) {
    console.log("Erro ao cadastrar");
    console.log(statusRecebido)
 }

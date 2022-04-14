@@ -10,51 +10,35 @@ const closeApp = document.getElementById('closeApp');
 const formNovaTarefa = document.querySelector('.nova-tarefa')
 const userinfo = document.querySelector('.user-info p');
 
-// metodo handle status tarefa
-function clickTask(id, completed) {
-   const data = {
-      completed: !completed
-   };
-
+// metodo para obter nome do usuario
+const carregaUsuario = function() {
    const settings = {
-      method: 'PUT',
+      method: 'GET',
       headers: {
-         'content-type': 'application/json',
          authorization: jwt
       },
-      body: JSON.stringify(data)
-   }
+   };
 
-   fetch(urlTasks + '/' + id, settings)
+   fetch(urlGetUser, settings)
       .then(response => {
+         // if (response.status === 201) {
          return response.json()
+            // }
+            // throw response;
       })
-      .then(task => {
-         console.log(task);
-         carregaTasks();
+      .then(res => {
+         console.log(res);
+         atualizaNome(res.firstName, res.lastName);
       })
+      .catch(err => {
+         console.log(err);
+         alert("Falha no login!")
+      });
 }
 
-// metodo delete tarefa
-function removeTask(id) {
-   console.log(`remove ${id}`);
-
-   const settings = {
-      method: 'DELETE',
-      headers: {
-         'content-type': 'application/json',
-         authorization: jwt
-      }
-   }
-
-   fetch(urlTasks + '/' + id, settings)
-      .then(response => {
-         return response.json()
-      })
-      .then(task => {
-         console.log(task);
-         carregaTasks();
-      })
+// funcao ira atualizar nome no userinfo
+const atualizaNome = function(firstname, lastname) {
+   userinfo.innerHTML = firstname + ' ' + lastname;
 }
 
 // metodo para obter lista de tarefas
@@ -171,35 +155,51 @@ const criarTask = function() {
       });
 }
 
-// metodo para obter nome do usuario
-const carregaUsuario = function() {
-   const settings = {
-      method: 'GET',
-      headers: {
-         authorization: jwt
-      },
+// metodo handle status tarefa
+function clickTask(id, completed) {
+   const data = {
+      completed: !completed
    };
 
-   fetch(urlGetUser, settings)
+   const settings = {
+      method: 'PUT',
+      headers: {
+         'content-type': 'application/json',
+         authorization: jwt
+      },
+      body: JSON.stringify(data)
+   }
+
+   fetch(urlTasks + '/' + id, settings)
       .then(response => {
-         // if (response.status === 201) {
          return response.json()
-            // }
-            // throw response;
       })
-      .then(res => {
-         console.log(res);
-         atualizaNome(res.firstName, res.lastName);
+      .then(task => {
+         console.log(task);
+         carregaTasks();
       })
-      .catch(err => {
-         console.log(err);
-         alert("Falha no login!")
-      });
 }
 
-// funcao ira atualizar nome no userinfo
-const atualizaNome = function(firstname, lastname) {
-   userinfo.innerHTML = firstname + ' ' + lastname;
+// metodo delete tarefa
+function removeTask(id) {
+   console.log(`remove ${id}`);
+
+   const settings = {
+      method: 'DELETE',
+      headers: {
+         'content-type': 'application/json',
+         authorization: jwt
+      }
+   }
+
+   fetch(urlTasks + '/' + id, settings)
+      .then(response => {
+         return response.json()
+      })
+      .then(task => {
+         console.log(task);
+         carregaTasks();
+      })
 }
 
 // fechar sessao
