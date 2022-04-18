@@ -242,3 +242,58 @@ a {
   0%{ opacity: 0.5;}
   100%{ opacity: 0.8;}
 }
+
+@media (max-width: 590px) {
+  
+  .tarefa .descricao {
+    flex-direction: column;
+    align-items:flex-start;
+    }
+
+
+  .tarefa .timestamp {
+    font-size: .75em;
+  } 
+  
+  header {
+    align-items: left;
+  }
+  
+header nav a {
+  display: none;
+}
+
+.user-info {
+  padding: 0.6em 0;
+}
+
+.user-info p {
+font-size: 0.9em;
+}
+
+.user-info .user-image {
+  height: 1.5em;
+  width: 1.5em;
+  margin-left: .5em;
+}
+
+#closeApp{
+  margin-left: 12.5px;
+  font-size: .65em;
+}
+ 
+}
+
+@media (max-width: 400px) {
+  
+.nova-tarefa button img {
+  height: 27.5px;
+  width: 27.5px;
+}
+ 
+.not-done {
+  min-width: 30px;
+  min-height: 30px;
+}
+
+}
