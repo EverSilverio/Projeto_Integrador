@@ -15,7 +15,7 @@
 
 # Description
 
-A simple signup and login system that grants access to a To Do List App screen.
+A To-Do List App accessed through account creation and login with data persistence.
 
 ## The signup screen rules and functions:
 * Do not accept less than 3 characters in the Name and Nickname inputs;
