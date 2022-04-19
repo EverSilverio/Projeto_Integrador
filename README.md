@@ -9,7 +9,11 @@
 
 # Description
 
-A To-Do List App accessed through account creation and login with data persistence.
+A To-Do List App accessed through account creation and login with data persistence. Check it [here](eversilverio.github.io/projeto_integrador/)
+
+### Login teste:
+> e-mail: jonjon@gemail.com
+> senha: js123456
 
 # Signup, Login and App pages:
 
@@ -45,11 +49,3 @@ A To-Do List App accessed through account creation and login with data persisten
 * JavaScript;
 * CTD API;
 * Fetch API.
-
-
-[Exemplo](https://eversilverio.github.io/DH/FrontEnd_II/proj_integrador/index.html)
-
-### Login teste:
-> e-mail: jonjon@gemail.com
-> 
-> senha: js123456
