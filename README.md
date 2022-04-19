@@ -1,4 +1,4 @@
-# [TO DO APP](eversilverio.github.io/projeto_integrador/)
+# [TO DO APP](https://eversilverio.github.io/Projeto_Integrador/)
 ## PROJETO INTEGRADOR - FRONT END II
 ### Equipe 4
 - Lucas Rosa
@@ -9,7 +9,7 @@
 
 # Description
 
-A To-Do List App accessed through account creation and login with data persistence. Check it [here](eversilverio.github.io/projeto_integrador/)
+A To-Do List App accessed through account creation and login with data persistence. Check it [here](https://eversilverio.github.io/Projeto_Integrador/)
 
 ### Login teste:
 > e-mail: jonjon@gemail.com
