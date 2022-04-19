@@ -27,14 +27,20 @@ a {
   text-transform: capitalize;
 }
 
-.user-info .user-image {
-  height: 2em;
-  width: 2em;
+.user-info .bi-person-circle .user-image{
+  height: 2rem;
+  width: 2rem;
   border-radius: 50%;
-  background-color: white;
+  /* background-color: white; */
   opacity: .4;
   margin-left: .7em;
 }
+
+.user-image{
+  margin-left: .7em;
+}
+
+
 
 #closeApp{
   margin-left: 15px;

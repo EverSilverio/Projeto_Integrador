@@ -13,6 +13,7 @@ h1 {
 form {
   position: relative;
   max-width: 26em;
+  min-width: 20em;
   background-color: white;
   display: flex;
   align-items: center;
@@ -101,3 +102,21 @@ body{
 }
 
 }
+
+#errorMsg{
+  text-align: center;
+  color: #ff0000;
+  background-color: #ffbbbb;
+  padding: 5px;
+  border-radius: 4px;
+  display: none;
+  }
+  
+  #successMsg{
+    text-align: center;
+    color: #00bb00;
+    background-color: #bbffbe;
+    padding: 5px;
+    border-radius: 4px;
+    display: none;
+  }
