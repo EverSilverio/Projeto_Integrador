@@ -7,15 +7,15 @@
 - Everton Silverio
 - Eduardo Russo
 
+# Description
+
+A To-Do List App accessed through account creation and login with data persistence.
+
 # Signup, Login and App pages:
 
 ![1](https://user-images.githubusercontent.com/86390899/161307824-d0e317c3-c236-410e-b130-76235f0af80a.png)
 ![2](https://user-images.githubusercontent.com/86390899/161307835-3a4012e8-7c07-4d61-9ace-234091ee2ffa.png)
 ![3](https://user-images.githubusercontent.com/86390899/164068002-f1cb51b9-351f-4808-857a-cf587170c389.png)
-
-# Description
-
-A To-Do List App accessed through account creation and login with data persistence.
 
 ## The signup screen rules and functions:
 * Do not accept less than 3 characters in the Name and Nickname inputs;
