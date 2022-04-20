@@ -27,7 +27,6 @@ const carregaUsuario = function() {
             // throw response;
       })
       .then(res => {
-         console.log(res);
          atualizaNome(res.firstName, res.lastName);
       })
       .catch(err => {
@@ -53,10 +52,7 @@ const carregaTasks = function() {
    fetch(urlTasks, settings)
       .then(response => response.json())
       .then(tasks => {
-         console.log(tasks);
-
          renderizarTasks(tasks);
-
       })
       .catch(err => {
          console.log(err);
@@ -77,8 +73,6 @@ const renderizarTasks = function(tasks) {
       tasks.forEach(task => {
          let date = new Date(task.createdAt);
          date.toLocaleDateString('pt-BR');
-
-         // console.log(date.getFullYear());
          date = date.getDate() +
             "/" + (date.getMonth() + 1) +
             "/" + date.getFullYear();
@@ -178,15 +172,12 @@ function clickTask(id, completed) {
          return response.json()
       })
       .then(task => {
-         console.log(task);
          carregaTasks();
       })
 }
 
 // metodo delete tarefa
 function removeTask(id) {
-   console.log(`remove ${id}`);
-
    const settings = {
       method: 'DELETE',
       headers: {
@@ -200,7 +191,6 @@ function removeTask(id) {
          return response.json()
       })
       .then(task => {
-         console.log(task);
          carregaTasks();
       })
 }
