@@ -34,12 +34,12 @@ const successMsg = document.querySelector("#successMsg")
 const regexMail = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
 
 
-   // normalização email
-   email.value = email.value.toLowerCase();
+// normalização email
+email.value = email.value.toLowerCase();
 
-   // validações do formulario
-   // nome
-   nome.addEventListener('keyup', () => {
+// validações do formulario
+// nome
+nome.addEventListener('keyup', () => {
    if (nome.value.length <= 2) {
       labelName.setAttribute("style", "color:red")
       labelName.innerHTML = "Insira ao menos 3 caracters!"
@@ -51,134 +51,133 @@ const regexMail = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
       nome.setAttribute("style", "border-color: green")
       validName = true;
    }
-   })
+})
 
-   // sobrenome
-   sobrenome.addEventListener('keyup', () => {
-   if (sobrenome.value.length <= 2 || sobrenome.value.length > 50) {
-      labelNickName.setAttribute("style", "color:red")
-      labelNickName.innerHTML = "Insira ao menos 3 caracters!"
-      sobrenome.setAttribute("style", "border-color: red", "color: red")
-      sobrenome.focus();
-    } else {
-      labelNickName.setAttribute("style", "color:black")
-      labelNickName.innerHTML = "Apelido:"
-      sobrenome.setAttribute("style", "border-color: green")
-      validNickname = true;
-    }
+// sobrenome
+sobrenome.addEventListener('keyup', () => {
+      if (sobrenome.value.length <= 2 || sobrenome.value.length > 50) {
+         labelNickName.setAttribute("style", "color:red")
+         labelNickName.innerHTML = "Insira ao menos 3 caracters!"
+         sobrenome.setAttribute("style", "border-color: red", "color: red")
+         sobrenome.focus();
+      } else {
+         labelNickName.setAttribute("style", "color:black")
+         labelNickName.innerHTML = "Apelido:"
+         sobrenome.setAttribute("style", "border-color: green")
+         validNickname = true;
+      }
    })
    // email
-   function validateEmail(mail) {
-      if (regexMail.test(mail.value)) {
-        labelEmail.setAttribute("style", "color:black")
-        labelEmail.innerHTML = "Email:"
-        email.setAttribute("style", "border-color: green")
-        validEmail = true;
-      } else {
-        labelEmail.setAttribute("style", "color:red")
-        labelEmail.innerHTML = "Email invalido!"
-        email.setAttribute("style", "border-color: red", "color: red")
-      }
-    }
-   // password
-   password.addEventListener('keyup', () => {
+function validateEmail(mail) {
+   if (regexMail.test(mail.value)) {
+      labelEmail.setAttribute("style", "color:black")
+      labelEmail.innerHTML = "Email:"
+      email.setAttribute("style", "border-color: green")
+      validEmail = true;
+   } else {
+      labelEmail.setAttribute("style", "color:red")
+      labelEmail.innerHTML = "Email invalido!"
+      email.setAttribute("style", "border-color: red", "color: red")
+   }
+}
+// password
+password.addEventListener('keyup', () => {
       if (password.value.length <= 5) {
-        labelPassword.setAttribute("style", "color:red")
-        labelPassword.innerHTML = "Insira ao menos 6 caracters!"
-        password.setAttribute("style", "border-color: red", "color: red")
+         labelPassword.setAttribute("style", "color:red")
+         labelPassword.innerHTML = "Insira ao menos 6 caracters!"
+         password.setAttribute("style", "border-color: red", "color: red")
       } else {
-        labelPassword.setAttribute("style", "color:black")
-        labelPassword.innerHTML = "Senha:"
-        password.setAttribute("style", "border-color: green")
-        validPassword = true;
+         labelPassword.setAttribute("style", "color:black")
+         labelPassword.innerHTML = "Senha:"
+         password.setAttribute("style", "border-color: green")
+         validPassword = true;
       }
-    })
+   })
    // repetir a senha
-   password2.addEventListener('keyup', () => {
+password2.addEventListener('keyup', () => {
    if (password2.value != password.value) {
       labelRepassword.setAttribute("style", "color:red")
       labelRepassword.innerHTML = "Senha não corresponde!"
       password2.setAttribute("style", "border-color: red", "color: red")
       password2.focus();
-    } else if (password2.value == "") {
+   } else if (password2.value == "") {
       password2.setAttribute("style", "border-color: red", "color: red")
       nome.focus();
-    }else{
+   } else {
       labelRepassword.setAttribute("style", "color:black")
       labelRepassword.innerHTML = "Repetir senha:"
       password2.setAttribute("style", "border-color: green")
       validrepassword = true;
    }
-   })
-   console.log(validName, validNickname, validEmail, validPassword, validrepassword)
-function criarUsuario() {
-   if (validName && validNickname && validEmail && validPassword && validrepassword) {
-  
-   // configuracao da API, encontrada na tarefa de criar Usuario.
-   let configuracaoRequisicao = {
-      method: 'POST',
-      body: JSON.stringify({
-         firstName: nome.value,
-         lastName: sobrenome.value,
-         email: email.value,
-         password: password.value
-      }),
-      headers: {
-         'Content-type': 'application/json'
-      },
-   };
+})
 
-   // Chamando a API
-   fetch("https://ctd-todo-api.herokuapp.com/v1/users", configuracaoRequisicao)
-      .then((response) => {
-         // verifica se o status se é 201, que é o status ok. Se não entra no catch.
-         if (response.status == 201) {
-            return response.json()
-         }
-         /* Se o código for diferente de sucesso (201), lança um throw para que a execução caia no Catch() */
-         throw response;
-      })
-      .then(function(resposta) {
-         console.log(resposta);
-         console.log(resposta.jwt);
-         cadastroSucesso(nome.value, sobrenome.value, email.value, resposta.jwt)
-      })
-      .catch(error => {
-         cadastroErro(error)
-      });
-// success message delayed to pretend it is signing user up
+function criarUsuario() {
+   
+   if (validName && validNickname && validEmail && validPassword && validrepassword) {
+
+      // configuracao da API, encontrada na tarefa de criar Usuario.
+      let configuracaoRequisicao = {
+         method: 'POST',
+         body: JSON.stringify({
+            firstName: nome.value,
+            lastName: sobrenome.value,
+            email: email.value,
+            password: password.value
+         }),
+         headers: {
+            'Content-type': 'application/json'
+         },
+      };
+
+      // Chamando a API
+      fetch("https://ctd-todo-api.herokuapp.com/v1/users", configuracaoRequisicao)
+         .then((response) => {
+            // verifica se o status se é 201, que é o status ok. Se não entra no catch.
+            if (response.status == 201) {
+               return response.json()
+            }
+            /* Se o código for diferente de sucesso (201), lança um throw para que a execução caia no Catch() */
+            throw response;
+         })
+         .then(function(resposta) {
+            cadastroSucesso(nome.value, sobrenome.value, email.value, resposta.jwt)
+            mostrarSpinner();
+         })
+         .catch(error => {
+            ocultarSpinner();
+            cadastroErro(error)
+         });
+      // success message delayed to pretend it is signing user up
       successMsg.setAttribute('style', 'display: block');
       successMsg.innerHTML = ('Cadastrando usuário...');
       errorMsg.setAttribute('style', 'display: none');
       errorMsg.innerHTML = '';
    }
-// error msg if the user do not enter valid information 
-   else{
+   // error msg if the user do not enter valid information 
+   else {
+      ocultarSpinner();
+
       errorMsg.setAttribute("style", "display: block");
       errorMsg.innerHTML = ('Preencha os campos corretamente!');
       successMsg.innerHTML = '';
       successMsg.setAttribute('style', 'display: none');
       nome.focus();
-   
    }
 
 }
 
-function cadastroSucesso (nome, sobrenome, email, jsonRecebido) {
-   localStorage.setItem("user", JSON.stringify(
-      { 
-         nome: nome, 
-         sobrenome: sobrenome, 
-         email: email, 
-         token: jsonRecebido 
-      }
-)
-)
+function cadastroSucesso(nome, sobrenome, email, jsonRecebido) {
+   localStorage.setItem("user", JSON.stringify({
+      nome: nome,
+      sobrenome: sobrenome,
+      email: email,
+      token: jsonRecebido
+   }))
 
    // Redireciona pagina inicial para login
    setTimeout(() => {
       window.location.href = 'index.html'
-    }, 3000);
+   }, 3000);
 }
 
 function cadastroErro(statusRecebido) {

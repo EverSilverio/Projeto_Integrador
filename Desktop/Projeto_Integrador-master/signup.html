@@ -1,51 +1,55 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>To-Do App</title>
 
-    <!-- ---------------- estilos compartilhados entre login e signup ---------------- -->
-    <link rel="stylesheet" href="styles/acesso.css" />
-  </head>
+<head>
+   <meta charset="UTF-8" />
+   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+   <title>To-Do App</title>
 
-  <body>
-    <div class="left">
+   <script src="./scripts/loader.js" defer></script>
+
+   <!-- ---------------- estilos compartilhados entre login e signup ---------------- -->
+   <link rel="stylesheet" href="styles/acesso.css" />
+</head>
+
+<body>
+   <div class="left">
       <img src="./assets/pessoa-signup.png" alt="" />
-    </div>
-    <div class="right">
+   </div>
+   <div class="right">
       <form>
-        <div class="form-header">
-          <p>To-Do App</p>
-        </div>
+         <div class="form-header">
+            <p>To-Do App</p>
+         </div>
 
-        <div id="errorMsg"></div>
-        <div id="successMsg"></div>
+         <div id="errorMsg"></div>
+         <div id="successMsg"></div>
 
-        <label id="labelName"> Nome: </label>
-        <input type="text" id="nome" />
+         <label id="labelName"> Nome: </label>
+         <input type="text" id="nome" />
 
-        <label id="labelNickName"> Sobrenome: </label>
-        <input type="text" id="sobrenome" />
+         <label id="labelNickName"> Sobrenome: </label>
+         <input type="text" id="sobrenome" />
 
-        <label id="labelEmail"> Email: </label>
-        <input type="text" id="email" onkeyup="validateEmail(this)"/>
+         <label id="labelEmail"> Email: </label>
+         <input type="text" id="email" onkeyup="validateEmail(this)" />
 
-        <label id="labelPassword"> Senha: </label>
-        <input type="password" id="password" />
+         <label id="labelPassword"> Senha: </label>
+         <input type="password" id="password" />
 
-        <label id="labelRepassword"> Repetir senha: </label>
-        <input type="password" id="password2" />
+         <label id="labelRepassword"> Repetir senha: </label>
+         <input type="password" id="password2" />
 
-        <button type="button" onclick="criarUsuario()">Criar conta</button>
+         <button type="button" onclick="criarUsuario()">Criar conta</button>
+         <div class="ingressar">
+            <a href="index.html">Já possui conta? Acesse aqui</a>
+         </div>
       </form>
-      <div class="ingressar">
-        <a href="index.html">Já possui conta? Acesse aqui</a>
-      </div>
-    </div>
+   </div>
 
-    <!-- ---------------------- lógica aplicada no registro -------------------- -->
-    <script src="./scripts/signup.js"></script>
-  </body>
+   <!-- ---------------------- lógica aplicada no registro -------------------- -->
+   <script src="./scripts/signup.js"></script>
+</body>
+
 </html>

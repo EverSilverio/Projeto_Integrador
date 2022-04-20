@@ -27,11 +27,9 @@ const carregaUsuario = function() {
             // throw response;
       })
       .then(res => {
-         console.log(res);
          atualizaNome(res.firstName, res.lastName);
       })
       .catch(err => {
-         console.log(err);
          alert("Falha no login!")
       });
 }
@@ -53,13 +51,12 @@ const carregaTasks = function() {
    fetch(urlTasks, settings)
       .then(response => response.json())
       .then(tasks => {
-         console.log(tasks);
+         
 
          renderizarTasks(tasks);
 
       })
       .catch(err => {
-         console.log(err);
          alert("Falha no login!")
       });
 }
@@ -77,7 +74,7 @@ const renderizarTasks = function(tasks) {
       let date = new Date(task.createdAt);
       date.toLocaleDateString('pt-BR');
 
-      // console.log(date.getFullYear());
+      
       date = date.getDate() +
          "/" + (date.getMonth() + 1) +
          "/" + date.getFullYear();
@@ -101,7 +98,7 @@ const templateTask = function(task, date) {
             <div class="descricao">
             <p class="nome">${task.description}</p>
             <div>
-               <button onclick="clickTask(${task.id}, true)"><i class="fas fa-undo-alt change"></i></button>
+               <button onclick="backTask(${task.id}, true)"><i class="fas fa-undo-alt change"></i></button>
                <button onclick="removeTask(${task.id})"><i class="far fa-trash-alt"></i></button>
             </div>
             </div>
@@ -138,6 +135,14 @@ const criarTask = function() {
       body: JSON.stringify(data)
    };
 
+   Swal.fire({
+      // position: 'top-end',
+      icon: 'success',
+      title: 'Tarefa adicionada!',
+      showConfirmButton: false,
+      timer: 900
+    })
+
    fetch(urlTasks, settings)
       .then(response => {
          // if (response.status === 201) {
@@ -150,56 +155,134 @@ const criarTask = function() {
          novaTarefa.value = '';
       })
       .catch(err => {
-         console.log(err);
          alert("Falha no login!")
       });
 }
 
 // metodo handle status tarefa
 function clickTask(id, completed) {
-   const data = {
-      completed: !completed
-   };
+   Swal.fire({
+      title: 'Tem certeza?',
+      text: "Você quer concluir esta tarefa?",
+      icon: 'warning',
+      showCancelButton: true,
+      cancelButtonText: 'Cancelar!',
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Sim, por favor!'
+    }).then((result) => {
+      if (result.isConfirmed) {
+         const data = {
+            completed: !completed
+         };
+         const settings = {
+            method: 'PUT',
+            headers: {
+               'content-type': 'application/json',
+               authorization: jwt
+            },
+            body: JSON.stringify(data)
+         }
+      
+         fetch(urlTasks + '/' + id, settings)
+            .then(response => {
+               return response.json()
+            })
+            .then(task => {
+               carregaTasks();
+            })
+            Swal.fire({
+               // position: 'top-end',
+               icon: 'success',
+               title: 'Tarefa concluída!',
+               showConfirmButton: false,
+               timer: 1500
+             })
+      }
+    })    
 
-   const settings = {
-      method: 'PUT',
-      headers: {
-         'content-type': 'application/json',
-         authorization: jwt
-      },
-      body: JSON.stringify(data)
-   }
+}
 
-   fetch(urlTasks + '/' + id, settings)
-      .then(response => {
-         return response.json()
-      })
-      .then(task => {
-         console.log(task);
-         carregaTasks();
-      })
+// metodo handle status tarefa
+function backTask(id, completed) {
+   Swal.fire({
+      title: 'Tem certeza?',
+      text: "Você deseja retomar essa tarefa?",
+      icon: 'warning',
+      showCancelButton: true,
+      cancelButtonText: 'Cancelar!',
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Sim, por favor!'
+    }).then((result) => {
+      if (result.isConfirmed) {
+         const data = {
+            completed: !completed
+         };
+         const settings = {
+            method: 'PUT',
+            headers: {
+               'content-type': 'application/json',
+               authorization: jwt
+            },
+            body: JSON.stringify(data)
+         }
+      
+         fetch(urlTasks + '/' + id, settings)
+            .then(response => {
+               return response.json()
+            })
+            .then(task => {
+               carregaTasks();
+            })
+            Swal.fire({
+               icon: 'success',
+               title: 'Tarefa retomada!',
+               showConfirmButton: false,
+               timer: 1500
+             })
+      }
+    })    
+
 }
 
 // metodo delete tarefa
 function removeTask(id) {
-   console.log(`remove ${id}`);
 
-   const settings = {
-      method: 'DELETE',
-      headers: {
-         'content-type': 'application/json',
-         authorization: jwt
+   Swal.fire({
+      title: 'Tem certeza?',
+      text: "Você não será capaz de reverter isso",
+      icon: 'warning',
+      showCancelButton: true,
+      cancelButtonText: 'Cancelar!',
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Sim. por favor!'
+    }).then((result) => {
+      if (result.isConfirmed) {
+         const settings = {
+            method: 'DELETE',
+            headers: {
+               'content-type': 'application/json',
+               authorization: jwt
+            }
+         }
+      
+         fetch(urlTasks + '/' + id, settings)
+            .then(response => {
+               return response.json()
+            }) 
+            .then(task => {
+              carregaTasks();
+            })
+        Swal.fire(
+          'Deletada!',
+          'A tarefa foi excluida.',
+          'success'
+        )
       }
-   }
-
-   fetch(urlTasks + '/' + id, settings)
-      .then(response => {
-         return response.json()
-      })
-      .then(task => {
-         console.log(task);
-         carregaTasks();
-      })
+    })
+ 
 }
 
 // fechar sessao
