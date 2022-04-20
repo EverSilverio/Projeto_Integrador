@@ -121,42 +121,48 @@ const templateTask = function(task, date) {
 
 // metodo para criar nova tarefa
 const criarTask = function() {
-   const data = {
-      description: novaTarefa.value,
-      completed: false
-   };
-
-   const settings = {
-      method: 'POST',
-      headers: {
-         'content-type': 'application/json',
-         Authorization: jwt
-      },
-      body: JSON.stringify(data)
-   };
-
-   Swal.fire({
-      // position: 'top-end',
-      icon: 'success',
-      title: 'Tarefa adicionada!',
-      showConfirmButton: false,
-      timer: 900
-    })
-
-   fetch(urlTasks, settings)
-      .then(response => {
-         // if (response.status === 201) {
-         return response.json()
-            // }
-            // throw response;
-      })
-      .then(res => {
-         carregaTasks();
-         novaTarefa.value = '';
-      })
-      .catch(err => {
-         alert("Falha no login!")
-      });
+   if (novaTarefa.value == ''){
+      novaTarefa.setAttribute("style", "border-color: red", "color: red")
+      novaTarefa.focus();
+   } else{
+      novaTarefa.setAttribute("style", "border-color: lightgray", "color: black")
+      const data = {
+         description: novaTarefa.value,
+         completed: false
+      };
+   
+      const settings = {
+         method: 'POST',
+         headers: {
+            'content-type': 'application/json',
+            Authorization: jwt
+         },
+         body: JSON.stringify(data)
+      };
+   
+      Swal.fire({
+         // position: 'top-end',
+         icon: 'success',
+         title: 'Tarefa adicionada!',
+         showConfirmButton: false,
+         timer: 900
+       })
+   
+      fetch(urlTasks, settings)
+         .then(response => {
+            // if (response.status === 201) {
+            return response.json()
+               // }
+               // throw response;
+         })
+         .then(res => {
+            carregaTasks();
+            novaTarefa.value = '';
+         })
+         .catch(err => {
+            alert("Falha no login!")
+         });
+   }
 }
 
 // metodo handle status tarefa
@@ -257,7 +263,7 @@ function removeTask(id) {
       cancelButtonText: 'Cancelar!',
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
-      confirmButtonText: 'Sim. por favor!'
+      confirmButtonText: 'Sim, por favor!'
     }).then((result) => {
       if (result.isConfirmed) {
          const settings = {
