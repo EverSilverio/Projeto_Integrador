@@ -112,8 +112,7 @@ password2.addEventListener('keyup', () => {
 })
 
 function criarUsuario() {
-   mostrarSpinner();
-
+   
    if (validName && validNickname && validEmail && validPassword && validrepassword) {
 
       // configuracao da API, encontrada na tarefa de criar Usuario.
@@ -141,10 +140,8 @@ function criarUsuario() {
             throw response;
          })
          .then(function(resposta) {
-            console.log(resposta);
-            console.log(resposta.jwt);
             cadastroSucesso(nome.value, sobrenome.value, email.value, resposta.jwt)
-            ocultarSpinner();
+            mostrarSpinner();
          })
          .catch(error => {
             ocultarSpinner();
