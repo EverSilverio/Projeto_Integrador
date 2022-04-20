@@ -1,5 +1,11 @@
 const inputEmail = document.getElementById('inputEmail');
+const labelEmail = document.querySelector("#labelEmail");
+
 const inputPassword = document.getElementById('inputPassword');
+const labelPassword = document.querySelector("#labelPassword");
+
+const errorMsg = document.querySelector("#errorMsg");
+
 const regexMail = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
 const urlLogin = 'https://ctd-todo-api.herokuapp.com/v1/users/login';
 
@@ -8,6 +14,9 @@ function entrar(ev) {
    let email = inputEmail.value.toLowerCase();
    inputEmail.value = email;
    let pass = inputPassword.value
+
+   // iniciou o processo de registro
+   mostrarSpinner();
 
    if (regexMail.test(email)) {
       const data = {
@@ -32,13 +41,29 @@ function entrar(ev) {
          })
          .then(info => {
             localStorage.setItem('login', JSON.stringify({ email: email, jwt: info.jwt }));
+            ocultarSpinner();
             location.href = 'tarefas.html';
          })
          .catch(err => {
             console.log(err);
-            alert("Falha no login!")
+            ocultarSpinner();
+            errorLogin()
          });
    } else {
-      alert("Formato de email invalido")
+      ocultarSpinner();
+      errorLogin()
    }
+}
+
+function errorLogin() {
+   inputEmail.setAttribute('style', 'border-color:red')
+   labelEmail.setAttribute('style', 'color:red')
+
+   inputPassword.setAttribute('style', 'border-color:red')
+   labelPassword.setAttribute('style', 'color:red')
+
+   errorMsg.setAttribute('style', 'display: block')
+   errorMsg.innerHTML = `Email ou Senha incorretos!`
+
+   inputEmail.focus()
 }
