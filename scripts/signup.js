@@ -62,7 +62,7 @@ sobrenome.addEventListener('keyup', () => {
          sobrenome.focus();
       } else {
          labelNickName.setAttribute("style", "color:black")
-         labelNickName.innerHTML = "Apelido:"
+         labelNickName.innerHTML = "Sobrenome:"
          sobrenome.setAttribute("style", "border-color: green")
          validNickname = true;
       }
