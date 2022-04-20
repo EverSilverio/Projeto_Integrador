@@ -15,6 +15,9 @@ function entrar(ev) {
    inputEmail.value = email;
    let pass = inputPassword.value
 
+   // iniciou o processo de registro
+   mostrarSpinner();
+
    if (regexMail.test(email)) {
       const data = {
          email: email,
@@ -38,14 +41,16 @@ function entrar(ev) {
          })
          .then(info => {
             localStorage.setItem('login', JSON.stringify({ email: email, jwt: info.jwt }));
+            ocultarSpinner();
             location.href = 'tarefas.html';
          })
          .catch(err => {
             console.log(err);
+            ocultarSpinner();
             errorLogin()
-            // alert("Falha no login!")
          });
    } else {
+      ocultarSpinner();
       errorLogin()
    }
 }
@@ -62,4 +67,3 @@ function errorLogin() {
 
    inputEmail.focus()
 }
-
