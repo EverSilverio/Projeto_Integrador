@@ -66,28 +66,31 @@ const carregaTasks = function() {
 
 // renderiza tarefas na tela
 const renderizarTasks = function(tasks) {
-   // remove visualização do skeleton
-   skeleton.style.display = 'none';
+   setTimeout(() => {
+      // remove visualização do skeleton
+      skeleton.style.display = 'none';
 
-   // listar as tarefas
-   tarefasPendentes.innerHTML = '';
-   tarefasTerminadas.innerHTML = '';
+      // listar as tarefas
+      tarefasPendentes.innerHTML = '';
+      tarefasTerminadas.innerHTML = '';
 
-   tasks.forEach(task => {
-      let date = new Date(task.createdAt);
-      date.toLocaleDateString('pt-BR');
+      tasks.forEach(task => {
+         let date = new Date(task.createdAt);
+         date.toLocaleDateString('pt-BR');
 
-      // console.log(date.getFullYear());
-      date = date.getDate() +
-         "/" + (date.getMonth() + 1) +
-         "/" + date.getFullYear();
+         // console.log(date.getFullYear());
+         date = date.getDate() +
+            "/" + (date.getMonth() + 1) +
+            "/" + date.getFullYear();
 
-      if (task.completed) {
-         tarefasTerminadas.innerHTML += templateTask(task, date);
-      } else {
-         tarefasPendentes.innerHTML += templateTask(task, date);
-      }
-   });
+         if (task.completed) {
+            tarefasTerminadas.innerHTML += templateTask(task, date);
+         } else {
+            tarefasPendentes.innerHTML += templateTask(task, date);
+         }
+      });
+
+   }, 2500);
 }
 
 // retorna template tarefa
