@@ -47,6 +47,7 @@ A To-Do List App accessed through account creation and login with data persisten
 # Technologies:
 * HTML;
 * CSS;
+* BootStrap;
 * JavaScript;
-* CTD API;
+* CTD API (heroku);
 * Fetch API.
